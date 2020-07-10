@@ -58,28 +58,23 @@ int access(struct node *ptr, int index)
 
 int main()
 {
-    int arr_len = 5;
-    int data_arr[] = {2, 8, 3, 4, 1};
-    struct node node_arr[arr_len];
+    int len = 3;
+    int data_arr[] = {-1, 2, 0};
+    struct node node_arr[len];
+    linked_list(data_arr, node_arr, len);
+    printf("%d\n", access(node_arr, 2));
 
-    linked_list(data_arr, node_arr, arr_len);
+    // group 1
+    struct node a_node = insert(&node_arr[0], 999, false);
+    printf("%d\n", access(&node_arr[0], 3));
+    
 
-    // making a node that will be one node down after root node
-    struct node a_node = insert(&node_arr[0], -1, false);
-
-    // current state of linked list should be {2, -1, 8, 3, 4, 1}
-
-    int access_index = 5;
-    int number99 = access(&node_arr[0], access_index);
-    printf("%d\n", number99);
-
-    // making a node that will become the root node
-    struct node root_node = insert(&node_arr[0], -99, true);
-
-    // current state of linked list should be {-99, 2, -1, 8, 3, 4, 1}
-
-    int number4 = access(&root_node, access_index);
-    printf("%d\n", number4);
+    // group 2
+    struct node root_node = insert(&node_arr[0], -6, true);
+    printf("%d\n", access(&root_node, 3));
+    
+    // each of the groups can execute fine on its own, but when
+    // together, they cause segfault
 
     return 0;
-}
+} 
