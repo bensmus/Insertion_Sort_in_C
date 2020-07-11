@@ -8,6 +8,7 @@ typedef struct mynode
     struct mynode *next;
 } node;
 
+/*
 node insert(node *ptr, int val, bool insert_root)
 {
     if (!insert_root)
@@ -16,7 +17,7 @@ node insert(node *ptr, int val, bool insert_root)
         node newnode = {val, ptr->next};
 
         // change the one that ptr points to
-        (ptr->next) = &newnode;
+        (ptr->next) = &newnode;  // THIS IS THE PROBLEM!!!
         return newnode;
     }
 
@@ -27,6 +28,20 @@ node insert(node *ptr, int val, bool insert_root)
         return newnode;
     }
 }
+*/
+void insert(node *oldptr, node *newptr, bool insert_root)
+{
+    if (!insert_root)
+    {
+        newptr->next = oldptr->next;
+        oldptr->next = newptr;
+    }
+
+    else
+    {
+        newptr->next = oldptr;
+    }
+}
 
 node next(node a_node)
 {
@@ -35,13 +50,13 @@ node next(node a_node)
 
 node access(node root_node, int index)
 {
-    printf("Entering access\n");
+    // printf("Entering access\n");
     node current_node = root_node;
     for (size_t i = 0; i < index; i++)
     {
-        printf("%d\n", current_node.val);
+        // printf("%d\n", current_node.val);
         current_node = next(current_node);
-        printf("root_node pointer %p\n", root_node.next);
+        // printf("root_node pointer %p\n", root_node.next);
     }
     return current_node;
 }
@@ -53,16 +68,30 @@ int main()
     node B = {1, &C};
     node A = {0, &B};
 
-    node afterA = insert(&A, -1, false);
+    printf("POINTERS on creation\n");
+    printf("A points to %d\n", A.next->val);
+    printf("B points to %d\n", B.next->val);
+    printf("C points to %d\n", C.next->val);
+    // gives error because null pointer printf("D points to %d\n", D.next->val);
+
+    node afterA = {-1, };
+    insert(&A, &afterA, false);
     // [0, -1, 1, 2, 3]
 
-    node test1 = access(A, 4);
-    printf("test value %d\n", test1.val);
-
+    printf("POINTERS after insertion\n");
     printf("A points to %d\n", A.next->val);
+    printf("afterA points to %d\n", afterA.next->val);
+    printf("B points to %d\n", B.next->val);
+    printf("C points to %d\n", C.next->val);
 
-    node test2 = access(A, 4);
-    printf("test value %d\n", test2.val);
+    node test1 = access(A, 4);
+
+    printf("POINTERS after access\n");
+    printf("A points to %d\n", A.next->val);
+    printf("afterA points to %d\n", afterA.next->val);
+    printf("B points to %d\n", B.next->val);
+    printf("C points to %d\n", C.next->val);
+
 
     /*
     node afterB = insert(&B, -2, false);
