@@ -8,27 +8,6 @@ typedef struct mynode
     struct mynode *next;
 } node;
 
-/*
-node insert(node *ptr, int val, bool insert_root)
-{
-    if (!insert_root)
-    {
-        // make a new node that points to the one that ptr points to
-        node newnode = {val, ptr->next};
-
-        // change the one that ptr points to
-        (ptr->next) = &newnode;  // THIS IS THE PROBLEM!!!
-        return newnode;
-    }
-
-    else
-    {
-        // make a node that points to ptr... that's it!
-        node newnode = {val, ptr};
-        return newnode;
-    }
-}
-*/
 void insert(node *oldptr, node *newptr, bool insert_root)
 {
     if (!insert_root)
