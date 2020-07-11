@@ -32,7 +32,6 @@ node insert(node *ptr, int val, bool insert_root)
 
         // change the one that ptr points to
         (ptr->next) = &newnode;
-
         return newnode;
     }
 
@@ -42,19 +41,7 @@ node insert(node *ptr, int val, bool insert_root)
         node newnode = {val, ptr};
         return newnode;
     }
-}
-
-// access the node value a certain amount of nodes down the linked list
-// we are modifying stuff!! THIS IS BAD!!!
-int access(node *ptr, int index)
-{
-    printf("entering access\n");
-    for (size_t i = 0; i < index; i++)
-    {
-        printf("currently on %d\n", ptr->val);
-        ptr = ptr->next;
-    }
-    return ptr->val;
+    
 }
 
 node next(node a_node)
@@ -62,30 +49,38 @@ node next(node a_node)
     return *(a_node.next);
 }
 
+node access(node root_node, int index)
+{
+    printf("Entering access\n");
+    node current_node = root_node;
+    for (size_t i = 0; i < index; i++)
+    {
+        printf("%d\n", current_node.val);
+        current_node = next(current_node);
+    }
+    return current_node;  
+}
 
 int main()
 {
-    int len = 3;
-    int data_arr[] = {-1, 2, 0};  // passing an arrya is confusing, use struct
+    int len = 5;
+    int data_arr[] = {-1, 2, 0, 4, 9};  
     node node_arr[len];
     linked_list(data_arr, node_arr, len);
-    printf("%d\n", access(node_arr, 2));
-
-    // group 1
-    node a_node = insert(&node_arr[0], 999, false);
-    printf("%d\n", access(&node_arr[0], 3));
-
-    // expecting linked list to be {-1, 999, 2, 0}
     
-
-    // group 2
-    node b_node = insert(&node_arr[0], -6, false);
-    printf("%d\n", access(&node_arr[0], 3));
-
-    // expecting linked list to be {-1, -6, 999, 2, 0}
+    printf("Access result: %d\n", access(node_arr[0], 4).val);
     
-    // getting logical errors
-    // unable to access next elements in linked list
+    node a_node = insert(&node_arr[0], -99, false);
+    // {-1, -99, 2, 0, 4, 9}
+
+    node node9 = access(node_arr[0], 5);
+    printf("Access result: %d\n", node9.val);
+
+    node b_node = insert(&node_arr[3], 111, false);
+    // {-1, -99, 2, 0, 4, 111, 9}
+
+    node node111 = access(node_arr[0], 5);
+    printf("Access result: %d\n", node111.val);
 
     return 0;
 } 

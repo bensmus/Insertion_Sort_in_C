@@ -2,14 +2,14 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-struct node
+typedef struct mynode
 {
     int val;
-    struct node *next;
-};
+    struct mynode *next;
+} node;
 
 // fill a preinitialized array of nodes with data
-void linked_list(int *data_arr, struct node *node_arr, int arr_len)
+void linked_list(int *data_arr, node *node_arr, int arr_len)
 {
     for (size_t i = 0; i < arr_len; i++)
     {
@@ -23,12 +23,12 @@ void linked_list(int *data_arr, struct node *node_arr, int arr_len)
     }
 }
 
-struct node insert(struct node *ptr, int val, bool insert_root)
+node insert(node *ptr, int val, bool insert_root)
 {
     if (!insert_root)
     {
         // make a new node that points to the one that ptr points to
-        struct node newnode = {val, ptr->next};
+        node newnode = {val, ptr->next};
 
         // change the one that ptr points to
         (ptr->next) = &newnode;
@@ -39,47 +39,53 @@ struct node insert(struct node *ptr, int val, bool insert_root)
     else
     {
         // make a node that points to ptr... that's it!
-        struct node newnode = {val, ptr};
+        node newnode = {val, ptr};
         return newnode;
     }
 }
 
-// access the node value a certain amount of nodes down the linked list
-int access(struct node *ptr, int index)
+node next(node a_node)
 {
-    printf("entering access\n");
+    return *(a_node.next);
+}
+
+node access(node root_node, int index)
+{
+    printf("Entering access\n");
+    node current_node = root_node;
     for (size_t i = 0; i < index; i++)
     {
-        printf("currently on %d\n", ptr->val);
-        ptr = ptr->next;
+        printf("%d\n", current_node.val);
+        current_node = next(root_node);
+        root_node = current_node;
     }
-    return ptr->val;
+    return current_node;  
 }
 
 int main()
 {
     int arr_len = 5;
     int data_arr[] = {2, 8, 3, 4, 1};
-    struct node node_arr[arr_len];
+    node node_arr[arr_len];
 
     linked_list(data_arr, node_arr, arr_len);
 
     // making a node that will be one node down after root node
-    struct node a_node = insert(&node_arr[0], -1, false);
+    node a_node = insert(&node_arr[0], -1, false);
 
     // current state of linked list should be {2, -1, 8, 3, 4, 1}
 
     int access_index = 5;
-    int number99 = access(&node_arr[0], access_index);
-    printf("%d\n", number99);
+    node node1 = access(node_arr[0], access_index);  // expecting 1
+    printf("Value of node1: %d\n", node1.val);
 
     // making a node that will become the root node
-    struct node root_node = insert(&node_arr[0], -99, true);
+    node b_node = insert(&node_arr[0], -99, false);
 
     // current state of linked list should be {-99, 2, -1, 8, 3, 4, 1}
 
-    int number4 = access(&root_node, access_index);
-    printf("%d\n", number4);
+    node node4 = access(root_node, access_index);  // expecting 4
+    printf("%d\n", node4.val);
 
     return 0;
 }
