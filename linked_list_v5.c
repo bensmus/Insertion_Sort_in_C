@@ -43,22 +43,14 @@ void insert(node *oldptr, node *newptr, bool insert_root)
     }
 }
 
-node next(node a_node)
+int access(node root_node, int index)
 {
-    return *(a_node.next);
-}
-
-node access(node root_node, int index)
-{
-    // printf("Entering access\n");
     node current_node = root_node;
     for (size_t i = 0; i < index; i++)
     {
-        // printf("%d\n", current_node.val);
-        current_node = next(current_node);
-        // printf("root_node pointer %p\n", root_node.next);
+        current_node = *(current_node.next);
     }
-    return current_node;
+    return current_node.val;
 }
 
 int main()
@@ -68,37 +60,30 @@ int main()
     node B = {1, &C};
     node A = {0, &B};
 
-    printf("POINTERS on creation\n");
-    printf("A points to %d\n", A.next->val);
-    printf("B points to %d\n", B.next->val);
-    printf("C points to %d\n", C.next->val);
-    // gives error because null pointer printf("D points to %d\n", D.next->val);
-
     node afterA = {-1, };
     insert(&A, &afterA, false);
-    // [0, -1, 1, 2, 3]
 
-    printf("POINTERS after insertion\n");
+    printf("POINTERS after standard insertion\n");
     printf("A points to %d\n", A.next->val);
     printf("afterA points to %d\n", afterA.next->val);
     printf("B points to %d\n", B.next->val);
     printf("C points to %d\n", C.next->val);
 
-    node test1 = access(A, 4);
+    int three = access(A, 4);
+    printf("The number three: %d\n", three);
 
-    printf("POINTERS after access\n");
+    node root = {100, };
+    insert(&A, &root, true);
+
+    printf("POINTERS after root insertion\n");
+    printf("root points to %d\n", root.next->val);
     printf("A points to %d\n", A.next->val);
     printf("afterA points to %d\n", afterA.next->val);
     printf("B points to %d\n", B.next->val);
     printf("C points to %d\n", C.next->val);
 
+    int hundred = access(root, 0);
+    printf("The number hundred: %d\n", hundred);
 
-    /*
-    node afterB = insert(&B, -2, false);
-    // [0, -1, 1, -2, 2, 3]
-
-    node Dclone = access(A, 5);
-    printf("Dclone value %d\n", Dclone.val);
-    */
     return 0;
 }
